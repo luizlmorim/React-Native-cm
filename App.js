@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, FlatList, StyleSheet, Alert } from 'react-native';
-import * as Location from 'expo-location';
+import React, { useState, useEffect } from "react";
+import { View, Text, Button, StyleSheet, Alert } from "react-native";
+import * as Location from "expo-location";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Inicio from "./components/InicioComponent";
+import Respiracao from "./components/RespiracaoComponent";
+import Diario from "./components/DiarioComponent";
 
-const App = () => {
+const Stack = createStackNavigator();
+
+const App = ({ navigation }) => {
+  /*
   const [denuncias, setDenuncias] = useState([]);
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
@@ -29,7 +37,7 @@ const App = () => {
 
   const fetchDenuncias = async () => {
     try {
-      const response = await fetch('http://192.168.1.9:3000/denuncias');
+      const response = await fetch('http://127.0.0.1:3000/registros');
       const data = await response.json();
       setDenuncias(data);
     } catch (error) {
@@ -46,7 +54,7 @@ const App = () => {
     const denuncia = { titulo, descricao, local };
 
     try {
-      const response = await fetch('http://192.168.1.9:3000/denuncias', {
+      const response = await fetch('http://127.0.0.1:3000/registros', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,7 +73,7 @@ const App = () => {
 
   const deleteDenuncia = async (id) => {
     try {
-      const response = await fetch(`http://192.168.1.9:3000/denuncias/${id}`, {
+      const response = await fetch(`http://127.0.0.1:3000/registros/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
@@ -84,30 +92,16 @@ const App = () => {
       <Button title="Excluir" onPress={() => deleteDenuncia(item._id)} />
     </View>
   );
-
+*/
   /*Contéudo das telas*/
   return (
-    <View style={styles.container}>
-      <Text style={styles.header}>Denúncias</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Título"
-        value={titulo}
-        onChangeText={setTitulo}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Descrição"
-        value={descricao}
-        onChangeText={setDescricao}
-      />
-      <Button title="Adicionar Denúncia" onPress={addDenuncia} />
-      <FlatList
-        data={denuncias}
-        renderItem={renderItem}
-        keyExtractor={(item) => item._id}
-      />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="inicio">
+        <Stack.Screen name="inicio" component={Inicio}></Stack.Screen>
+        <Stack.Screen name="Respiracao" component={Respiracao}></Stack.Screen>
+        <Stack.Screen name="Diario" component={Diario}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
@@ -118,18 +112,18 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 20,
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
   },
   item: {
-    backgroundColor: '#f9c2ff',
+    backgroundColor: "#f9c2ff",
     padding: 20,
     marginVertical: 8,
   },

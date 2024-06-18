@@ -1,30 +1,34 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const Denuncia = require('./Denuncia');
+const Diario = require('./Diario');
 
 const app = express();
 
-mongoose.connect('mongodb://127.0.0.1:27017/denuncias?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://luizmiranda29e:dWaKFYmMUIfWpf9W@calm-mind.3d8pt5v.mongodb.net/?retryWrites=true&w=majority&appName=Calm-Mind"', { useNewUrlParser: true, useUnifiedTopology: true });
 
 app.use(cors()); 
 app.use(express.json());
 
-app.get('/denuncias', async (req, res) => {
-    const denuncias = await Denuncia.find();
+app.get('/registros', async (req, res) => {
+    const denuncias = await Diario.find();
     res.json(denuncias);
 });
 
-app.post('/denuncias', async (req, res) => {
+app.post('/registros', async (req, res) => {
     const { titulo, descricao, local } = req.body;
-    const denuncia = new Denuncia({ titulo, descricao, local });
+    const denuncia = new Diario({ titulo, descricao, local });
     await denuncia.save();
     res.json(denuncia);
 });
 
-app.delete('/denuncias/:id', async (req, res) => {
-    await Denuncia.findByIdAndDelete(req.params.id);
-    res.send('Denúncia deletada com sucesso');
+app.get('/registros/:id', async (req, res) => {
+    const denuncia = await Diario.findById(req.params.id);
+    res.send(denuncia);
+});
+app.delete('/registros/:id', async (req, res) => {
+    await Diario.findByIdAndDelete(req.params.id);
+    res.send('Registro deletado com sucesso');
 });
 
 app.listen(3000, () => {

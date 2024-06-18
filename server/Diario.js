@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const DenunciaSchema = new mongoose.Schema({
+const DiarioSchema = new mongoose.Schema({
     titulo: {
         type: String,
         required: true
@@ -18,7 +18,11 @@ const DenunciaSchema = new mongoose.Schema({
             type: Number,
             required: true
         }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now()
     }
 });
 
-module.exports = mongoose.model('Denuncia', DenunciaSchema);
+module.exports = mongoose.model('Diario', DiarioSchema);
